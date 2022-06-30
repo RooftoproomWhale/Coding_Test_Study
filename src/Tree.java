@@ -4,69 +4,57 @@ public class Tree {
     public void init(String commend) {
         String[] lines = commend.split("\n");
         for (int i = 0; i < lines.length; i++) {
-            String[] nodes = lines[i].trim().split(" ");
-            this.append(nodes[0].trim(), nodes[1].trim(), nodes[2].trim());
+            this.append(Integer.parseInt(lines[i].trim()));
         }
     }
 
-    public void append(String nodeValue, String leftValue, String rightValue) {
+    public void append(int nodeValue) {
         if (this.root == null) {
             root = new TreeNode(nodeValue);
-            root.setLeft(new TreeNode(leftValue));
-            root.setRight(new TreeNode(rightValue));
             return;
         }
-        this.append(this.root.getLeft(), nodeValue, leftValue, rightValue);
-        this.append(this.root.getRight(), nodeValue, leftValue, rightValue);
+        if (root.isLessThanTo(nodeValue)) {
+            if (root.getLeft() != null) {
+                this.append(this.root.getLeft(), nodeValue);
+            } else {
+                root.setLeft(new TreeNode(nodeValue));
+            }
+        } else {
+            if (root.getRight() != null) {
+                this.append(this.root.getRight(), nodeValue);
+            } else {
+                root.setRight(new TreeNode(nodeValue));
+            }
+        }
     }
 
-    private void append(TreeNode node, String nodeValue, String leftValue, String rightValue) {
-        if (node == null) return;
-        if (node.equalsValue(nodeValue)) node.setLeftRightNode(leftValue, rightValue);
-        this.append(node.getLeft(), nodeValue, leftValue, rightValue);
-        this.append(node.getRight(), nodeValue, leftValue, rightValue);
+    private void append(TreeNode node, int nodeValue) {
+        if (node.isLessThanTo(nodeValue)) {
+            if (node.getLeft() == null) {
+                node.setLeft(new TreeNode(nodeValue));
+                return;
+            }
+            this.append(node.getLeft(), nodeValue);
+        } else {
+            if (node.getRight() == null) {
+                node.setRight(new TreeNode(nodeValue));
+                return;
+            }
+            this.append(node.getRight(), nodeValue);
+        }
+
     }
 
-    public void preorderTraversal() {
+    public void traversal() {
+        this.traversal(this.root.getLeft());
+        this.traversal(this.root.getRight());
         this.root.printValue();
-        this.preorderTraversal(this.root.getLeft());
-        this.preorderTraversal(this.root.getRight());
-        System.out.println();
     }
 
-    private void preorderTraversal(TreeNode node) {
+    private void traversal(TreeNode node) {
         if (node == null) return;
-        if (!node.isEmptyValue()) node.printValue();
-        this.preorderTraversal(node.getLeft());
-        this.preorderTraversal(node.getRight());
+        this.traversal(node.getLeft());
+        this.traversal(node.getRight());
+        node.printValue();
     }
-
-    public void inorderTraversal() {
-        this.inorderTraversal(this.root.getLeft());
-        this.root.printValue();
-        this.inorderTraversal(this.root.getRight());
-        System.out.println();
-    }
-
-    private void inorderTraversal(TreeNode node) {
-        if (node == null) return;
-        this.inorderTraversal(node.getLeft());
-        if (!node.isEmptyValue()) node.printValue();
-        this.inorderTraversal(node.getRight());
-    }
-
-    public void postorderTraversal() {
-        this.postorderTraversal(this.root.getLeft());
-        this.postorderTraversal(this.root.getRight());
-        this.root.printValue();
-        System.out.println();
-    }
-
-    private void postorderTraversal(TreeNode node) {
-        if (node == null) return;
-        this.postorderTraversal(node.getLeft());
-        this.postorderTraversal(node.getRight());
-        if (!node.isEmptyValue()) node.printValue();
-    }
-
 }
