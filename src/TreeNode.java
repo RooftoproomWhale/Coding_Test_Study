@@ -1,15 +1,15 @@
 public
 class TreeNode {
-    private int value;
+    private NodeXY xy;
     private TreeNode left;
     private TreeNode right;
 
-    public TreeNode(int value) {
-        this.value = value;
+    public TreeNode(NodeXY xy) {
+        this.xy = xy;
     }
 
-    public boolean isLessThanTo(int nodeValue) {
-        return this.value > nodeValue;
+    public boolean isLessThanTo(NodeXY nodeValue) {
+        return this.xy.getX() > nodeValue.getX();
     }
 
     public TreeNode getLeft() {
@@ -28,7 +28,7 @@ class TreeNode {
         this.right = right;
     }
 
-    public void printValue() {
-        System.out.println(this.value);
+    public int getOrder() {
+        return this.xy.getOrder();
     }
 }
